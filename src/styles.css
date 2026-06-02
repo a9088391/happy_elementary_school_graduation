@@ -47,7 +47,7 @@ a {
   transition: none;
 }
 
-.app-shell.is-dark {
+body.lights-off .app-shell {
   color: #f9f3ff;
   background:
     linear-gradient(135deg, rgba(255, 109, 168, 0.18), transparent 28%),
@@ -55,67 +55,67 @@ a {
     linear-gradient(180deg, #141025 0%, #1c1832 48%, #080713 100%);
 }
 
-.app-shell.is-dark .hero-copy h1,
-.app-shell.is-dark .panel-heading,
-.app-shell.is-dark .now-playing h2 {
+body.lights-off .app-shell .hero-copy h1,
+body.lights-off .app-shell .panel-heading,
+body.lights-off .app-shell .now-playing h2 {
   color: #fffaff;
 }
 
-.app-shell.is-dark .hero-copy p,
-.app-shell.is-dark .now-playing span,
-.app-shell.is-dark .label,
-.app-shell.is-dark .mode-status,
-.app-shell.is-dark .timeline {
+body.lights-off .app-shell .hero-copy p,
+body.lights-off .app-shell .now-playing span,
+body.lights-off .app-shell .label,
+body.lights-off .app-shell .mode-status,
+body.lights-off .app-shell .timeline {
   color: rgba(255, 250, 255, 0.72);
 }
 
-.app-shell.is-dark .track-panel,
-.app-shell.is-dark .stage-panel {
+body.lights-off .app-shell .track-panel,
+body.lights-off .app-shell .stage-panel {
   border-color: rgba(255, 255, 255, 0.12);
   background: rgba(22, 18, 38, 0.86);
   box-shadow: 0 24px 80px rgba(0, 0, 0, 0.34);
 }
 
-.app-shell.is-dark .hero-status,
-.app-shell.is-dark .light-toggle {
+body.lights-off .app-shell .hero-status,
+body.lights-off .app-shell .light-toggle {
   border-color: rgba(255, 255, 255, 0.14);
   background: rgba(255, 255, 255, 0.08);
   color: #83e7df;
   box-shadow: 0 18px 42px rgba(0, 0, 0, 0.28);
 }
 
-.app-shell.is-dark .track-select,
-.app-shell.is-dark .track-search,
-.app-shell.is-dark .mode-button {
+body.lights-off .app-shell .track-select,
+body.lights-off .app-shell .track-search,
+body.lights-off .app-shell .mode-button {
   border-color: rgba(255, 255, 255, 0.12);
   background: rgba(255, 255, 255, 0.08);
   color: #fffaff;
 }
 
-.app-shell.is-dark .track-search input {
+body.lights-off .app-shell .track-search input {
   color: #fffaff;
 }
 
-.app-shell.is-dark .track-button {
+body.lights-off .app-shell .track-button {
   color: #f9f3ff;
 }
 
-.app-shell.is-dark .track-button:hover,
-.app-shell.is-dark .track-button:focus-visible {
+body.lights-off .app-shell .track-button:hover,
+body.lights-off .app-shell .track-button:focus-visible {
   background: rgba(255, 255, 255, 0.08);
 }
 
-.app-shell.is-dark .track-subtitle,
-.app-shell.is-dark .track-empty {
+body.lights-off .app-shell .track-subtitle,
+body.lights-off .app-shell .track-empty {
   color: rgba(255, 250, 255, 0.62);
 }
 
-.app-shell.is-dark .icon-button {
+body.lights-off .app-shell .icon-button {
   background: rgba(131, 231, 223, 0.1);
   color: #83e7df;
 }
 
-.app-shell.is-dark .mode-button.is-active {
+body.lights-off .app-shell .mode-button.is-active {
   border-color: transparent;
   background: linear-gradient(135deg, #ff6da8, #52d1c8);
   color: #151225;

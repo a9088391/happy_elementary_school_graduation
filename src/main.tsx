@@ -5,7 +5,6 @@ import {
   Headphones,
   Image as ImageIcon,
   Lightbulb,
-  LightbulbOff,
   Music2,
   Pause,
   Play,
@@ -106,7 +105,6 @@ function App() {
   const [selectedTrackId, setSelectedTrackId] = useState(tracks[0]?.id ?? '');
   const [trackQuery, setTrackQuery] = useState('');
   const [playbackMode, setPlaybackMode] = useState<PlaybackMode>('repeat-all');
-  const [lightsOn, setLightsOn] = useState(true);
   const [captions, setCaptions] = useState<Caption[]>([]);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
@@ -115,6 +113,11 @@ function App() {
   const audioRef = useRef<HTMLAudioElement>(null);
   const pendingAutoplayRef = useRef(false);
   const hasStartedPlaybackRef = useRef(false);
+
+  useEffect(() => {
+    document.body.classList.remove('lights-off');
+    return () => document.body.classList.remove('lights-off');
+  }, []);
 
   const selectedTrack = useMemo(
     () => tracks.find((track) => track.id === selectedTrackId) ?? tracks[0],
@@ -253,6 +256,10 @@ function App() {
     setIsPlaying(false);
   }
 
+  function toggleLights() {
+    document.body.classList.toggle('lights-off');
+  }
+
   if (!selectedTrack) {
     return (
       <main className="empty-state">
@@ -267,7 +274,7 @@ function App() {
   const activePhoto = photos[photoIndex % Math.max(photos.length, 1)];
 
   return (
-    <main className={`app-shell ${lightsOn ? '' : 'is-dark'}`}>
+    <main className="app-shell">
       <section className="hero">
         <div className="hero-copy">
           <span className="eyebrow">
@@ -284,11 +291,11 @@ function App() {
         <button
           type="button"
           className="light-toggle"
-          onClick={() => setLightsOn((value) => !value)}
-          aria-pressed={!lightsOn}
+          onClick={toggleLights}
+          aria-label="開關燈"
         >
-          {lightsOn ? <LightbulbOff size={18} aria-hidden="true" /> : <Lightbulb size={18} aria-hidden="true" />}
-          {lightsOn ? '關燈' : '開燈'}
+          <Lightbulb size={18} aria-hidden="true" />
+          開關燈
         </button>
       </section>
 
