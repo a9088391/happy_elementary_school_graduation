@@ -4,10 +4,15 @@ import {
   Download,
   Headphones,
   Image as ImageIcon,
+  Lightbulb,
+  LightbulbOff,
   Music2,
   Pause,
   Play,
+  Repeat,
+  Repeat1,
   Search,
+  Shuffle,
   SkipBack,
   SkipForward,
   Sparkles,
@@ -38,8 +43,17 @@ type Caption = {
   text: string;
 };
 
+type PlaybackMode = 'stop' | 'repeat-all' | 'shuffle' | 'repeat-one';
+
 const tracks = manifest.tracks as Track[];
 const photos = manifest.photos as Photo[];
+
+const playbackModeLabels: Record<PlaybackMode, string> = {
+  stop: '播完停止',
+  'repeat-all': '連續播放',
+  shuffle: '隨機播放',
+  'repeat-one': '單曲重複',
+};
 
 function parseTimestamp(value: string) {
   const match = value.match(/(\d{2}):(\d{2}):(\d{2}),(\d{3})/);
@@ -76,9 +90,23 @@ function randomPhotoIndex(currentIndex: number) {
   return nextIndex >= currentIndex ? nextIndex + 1 : nextIndex;
 }
 
+function randomTrackId(currentTrackId: string) {
+  if (tracks.length <= 1) return currentTrackId;
+  const currentIndex = tracks.findIndex((track) => track.id === currentTrackId);
+  const nextIndex = Math.floor(Math.random() * (tracks.length - 1));
+  return nextIndex >= currentIndex ? tracks[nextIndex + 1].id : tracks[nextIndex].id;
+}
+
+function randomAnyTrackId() {
+  if (!tracks.length) return '';
+  return tracks[Math.floor(Math.random() * tracks.length)].id;
+}
+
 function App() {
   const [selectedTrackId, setSelectedTrackId] = useState(tracks[0]?.id ?? '');
   const [trackQuery, setTrackQuery] = useState('');
+  const [playbackMode, setPlaybackMode] = useState<PlaybackMode>('repeat-all');
+  const [lightsOn, setLightsOn] = useState(true);
   const [captions, setCaptions] = useState<Caption[]>([]);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
@@ -86,6 +114,7 @@ function App() {
   const [photoIndex, setPhotoIndex] = useState(0);
   const audioRef = useRef<HTMLAudioElement>(null);
   const pendingAutoplayRef = useRef(false);
+  const hasStartedPlaybackRef = useRef(false);
 
   const selectedTrack = useMemo(
     () => tracks.find((track) => track.id === selectedTrackId) ?? tracks[0],
@@ -149,16 +178,21 @@ function App() {
     const audio = audioRef.current;
     if (!audio) return;
     if (audio.paused) {
+      if (!hasStartedPlaybackRef.current && playbackMode === 'shuffle') {
+        const randomId = randomAnyTrackId();
+        pendingAutoplayRef.current = true;
+        if (randomId === selectedTrackId) {
+          audio.currentTime = 0;
+          void audio.play();
+          return;
+        }
+        setSelectedTrackId(randomId);
+        return;
+      }
       void audio.play();
     } else {
       audio.pause();
     }
-  }
-
-  function skip(seconds: number) {
-    const audio = audioRef.current;
-    if (!audio) return;
-    audio.currentTime = Math.max(0, Math.min(audio.duration || 0, audio.currentTime + seconds));
   }
 
   function selectTrack(id: string) {
@@ -171,6 +205,52 @@ function App() {
       return;
     }
     setSelectedTrackId(id);
+  }
+
+  function playNextTrack() {
+    if (playbackMode === 'shuffle') {
+      pendingAutoplayRef.current = true;
+      setSelectedTrackId(randomTrackId(selectedTrackId));
+      return;
+    }
+
+    const currentIndex = tracks.findIndex((track) => track.id === selectedTrackId);
+    const nextIndex = currentIndex === -1 ? 0 : (currentIndex + 1) % tracks.length;
+    selectTrack(tracks[nextIndex].id);
+  }
+
+  function playPreviousTrack() {
+    if (playbackMode === 'shuffle') {
+      pendingAutoplayRef.current = true;
+      setSelectedTrackId(randomTrackId(selectedTrackId));
+      return;
+    }
+
+    const currentIndex = tracks.findIndex((track) => track.id === selectedTrackId);
+    const previousIndex = currentIndex <= 0 ? tracks.length - 1 : currentIndex - 1;
+    selectTrack(tracks[previousIndex].id);
+  }
+
+  function handleTrackEnded() {
+    const audio = audioRef.current;
+    if (playbackMode === 'repeat-one') {
+      if (!audio) return;
+      audio.currentTime = 0;
+      void audio.play();
+      return;
+    }
+
+    if (playbackMode === 'shuffle') {
+      playNextTrack();
+      return;
+    }
+
+    if (playbackMode === 'repeat-all') {
+      playNextTrack();
+      return;
+    }
+
+    setIsPlaying(false);
   }
 
   if (!selectedTrack) {
@@ -187,7 +267,7 @@ function App() {
   const activePhoto = photos[photoIndex % Math.max(photos.length, 1)];
 
   return (
-    <main className="app-shell">
+    <main className={`app-shell ${lightsOn ? '' : 'is-dark'}`}>
       <section className="hero">
         <div className="hero-copy">
           <span className="eyebrow">
@@ -201,6 +281,15 @@ function App() {
           <Headphones size={18} aria-hidden="true" />
           <span>{tracks.length} 首歌曲</span>
         </div>
+        <button
+          type="button"
+          className="light-toggle"
+          onClick={() => setLightsOn((value) => !value)}
+          aria-pressed={!lightsOn}
+        >
+          {lightsOn ? <LightbulbOff size={18} aria-hidden="true" /> : <Lightbulb size={18} aria-hidden="true" />}
+          {lightsOn ? '關燈' : '開燈'}
+        </button>
       </section>
 
       <section className="player-layout" aria-label="音樂播放區">
@@ -292,10 +381,11 @@ function App() {
             preload="metadata"
             onPlay={() => {
               pendingAutoplayRef.current = false;
+              hasStartedPlaybackRef.current = true;
               setIsPlaying(true);
             }}
             onPause={() => setIsPlaying(false)}
-            onEnded={() => setIsPlaying(false)}
+            onEnded={handleTrackEnded}
             onTimeUpdate={(event) => setCurrentTime(event.currentTarget.currentTime)}
             onLoadedMetadata={(event) => {
               setDuration(event.currentTarget.duration);
@@ -306,16 +396,55 @@ function App() {
           />
 
           <div className="controls">
-            <button type="button" className="icon-button" onClick={() => skip(-10)} aria-label="倒退十秒">
+            <button type="button" className="icon-button" onClick={playPreviousTrack} aria-label="上一首">
               <SkipBack size={20} aria-hidden="true" />
             </button>
             <button type="button" className="play-button" onClick={togglePlay} aria-label={isPlaying ? '暫停' : '播放'}>
               {isPlaying ? <Pause size={28} aria-hidden="true" /> : <Play size={28} aria-hidden="true" />}
             </button>
-            <button type="button" className="icon-button" onClick={() => skip(10)} aria-label="快轉十秒">
+            <button type="button" className="icon-button" onClick={playNextTrack} aria-label="下一首">
               <SkipForward size={20} aria-hidden="true" />
             </button>
           </div>
+
+          <div className="mode-controls" aria-label="播放模式">
+            <button
+              type="button"
+              className={`mode-button ${playbackMode === 'stop' ? 'is-active' : ''}`}
+              onClick={() => setPlaybackMode('stop')}
+              aria-pressed={playbackMode === 'stop'}
+            >
+              播完停止
+            </button>
+            <button
+              type="button"
+              className={`mode-button ${playbackMode === 'repeat-all' ? 'is-active' : ''}`}
+              onClick={() => setPlaybackMode('repeat-all')}
+              aria-pressed={playbackMode === 'repeat-all'}
+            >
+              <Repeat size={16} aria-hidden="true" />
+              連續播放
+            </button>
+            <button
+              type="button"
+              className={`mode-button ${playbackMode === 'shuffle' ? 'is-active' : ''}`}
+              onClick={() => setPlaybackMode('shuffle')}
+              aria-pressed={playbackMode === 'shuffle'}
+            >
+              <Shuffle size={16} aria-hidden="true" />
+              隨機播放
+            </button>
+            <button
+              type="button"
+              className={`mode-button ${playbackMode === 'repeat-one' ? 'is-active' : ''}`}
+              onClick={() => setPlaybackMode('repeat-one')}
+              aria-pressed={playbackMode === 'repeat-one'}
+            >
+              <Repeat1 size={16} aria-hidden="true" />
+              單曲重複
+            </button>
+          </div>
+          <p className="mode-status">目前模式：{playbackModeLabels[playbackMode]}</p>
 
           <div className="timeline">
             <span>{formatTime(currentTime)}</span>
