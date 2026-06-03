@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-02T06:25:02.335Z",
+  "generatedAt": "2026-06-03T06:25:50.086Z",
   "tracks": [
     {
       "id": "track-1",
@@ -113,6 +113,39 @@
     },
     {
       "id": "track-11",
+      "title": "畢業的風",
+      "artist": "畢業紀念歌曲",
+      "audioFile": "畢業的風.mp3",
+      "audioUrl": "/audio/%E7%95%A2%E6%A5%AD%E7%9A%84%E9%A2%A8.mp3",
+      "lyricsFile": "畢業的風.txt",
+      "lyricsUrl": "/lyrics/%E7%95%A2%E6%A5%AD%E7%9A%84%E9%A2%A8.txt",
+      "subtitleFile": "畢業的風.srt",
+      "subtitleUrl": "/subtitles/%E7%95%A2%E6%A5%AD%E7%9A%84%E9%A2%A8.srt"
+    },
+    {
+      "id": "track-12",
+      "title": "畢業這一程 - 1",
+      "artist": "畢業紀念歌曲",
+      "audioFile": "畢業這一程 - 1.mp3",
+      "audioUrl": "/audio/%E7%95%A2%E6%A5%AD%E9%80%99%E4%B8%80%E7%A8%8B%20-%201.mp3",
+      "lyricsFile": "畢業這一程.txt",
+      "lyricsUrl": "/lyrics/%E7%95%A2%E6%A5%AD%E9%80%99%E4%B8%80%E7%A8%8B.txt",
+      "subtitleFile": "畢業這一程 - 1.srt",
+      "subtitleUrl": "/subtitles/%E7%95%A2%E6%A5%AD%E9%80%99%E4%B8%80%E7%A8%8B%20-%201.srt"
+    },
+    {
+      "id": "track-13",
+      "title": "畢業這一程 - 2",
+      "artist": "畢業紀念歌曲",
+      "audioFile": "畢業這一程 - 2.mp3",
+      "audioUrl": "/audio/%E7%95%A2%E6%A5%AD%E9%80%99%E4%B8%80%E7%A8%8B%20-%202.mp3",
+      "lyricsFile": "畢業這一程.txt",
+      "lyricsUrl": "/lyrics/%E7%95%A2%E6%A5%AD%E9%80%99%E4%B8%80%E7%A8%8B.txt",
+      "subtitleFile": "畢業這一程 - 2.srt",
+      "subtitleUrl": "/subtitles/%E7%95%A2%E6%A5%AD%E9%80%99%E4%B8%80%E7%A8%8B%20-%202.srt"
+    },
+    {
+      "id": "track-14",
       "title": "愷妡，妳要畢業了 - 1",
       "artist": "畢業紀念歌曲",
       "audioFile": "愷妡，妳要畢業了 - 1.mp3",
@@ -123,7 +156,7 @@
       "subtitleUrl": "/subtitles/%E6%84%B7%E5%A6%A1%EF%BC%8C%E5%A6%B3%E8%A6%81%E7%95%A2%E6%A5%AD%E4%BA%86%20-%201.srt"
     },
     {
-      "id": "track-12",
+      "id": "track-15",
       "title": "愷妡，妳要畢業了 - 2",
       "artist": "畢業紀念歌曲",
       "audioFile": "愷妡，妳要畢業了 - 2.mp3",
@@ -134,7 +167,7 @@
       "subtitleUrl": "/subtitles/%E6%84%B7%E5%A6%A1%EF%BC%8C%E5%A6%B3%E8%A6%81%E7%95%A2%E6%A5%AD%E4%BA%86%20-%202.srt"
     },
     {
-      "id": "track-13",
+      "id": "track-16",
       "title": "愷妡，妳會飛的很高",
       "artist": "畢業紀念歌曲",
       "audioFile": "愷妡，妳會飛的很高.mp3",
@@ -145,7 +178,7 @@
       "subtitleUrl": "/subtitles/%E6%84%B7%E5%A6%A1%EF%BC%8C%E5%A6%B3%E6%9C%83%E9%A3%9B%E7%9A%84%E5%BE%88%E9%AB%98.srt"
     },
     {
-      "id": "track-14",
+      "id": "track-17",
       "title": "愷妡，往前走",
       "artist": "畢業紀念歌曲",
       "audioFile": "愷妡，往前走.mp3",
@@ -156,7 +189,7 @@
       "subtitleUrl": "/subtitles/%E6%84%B7%E5%A6%A1%EF%BC%8C%E5%BE%80%E5%89%8D%E8%B5%B0.srt"
     },
     {
-      "id": "track-15",
+      "id": "track-18",
       "title": "愷妡上國中 - 1",
       "artist": "畢業紀念歌曲",
       "audioFile": "愷妡上國中 - 1.mp3",
@@ -167,7 +200,7 @@
       "subtitleUrl": "/subtitles/%E6%84%B7%E5%A6%A1%E4%B8%8A%E5%9C%8B%E4%B8%AD%20-%201.srt"
     },
     {
-      "id": "track-16",
+      "id": "track-19",
       "title": "愷妡上國中 - 2",
       "artist": "畢業紀念歌曲",
       "audioFile": "愷妡上國中 - 2.mp3",
@@ -178,7 +211,7 @@
       "subtitleUrl": "/subtitles/%E6%84%B7%E5%A6%A1%E4%B8%8A%E5%9C%8B%E4%B8%AD%20-%202.srt"
     },
     {
-      "id": "track-17",
+      "id": "track-20",
       "title": "愷妡在光的路上",
       "artist": "畢業紀念歌曲",
       "audioFile": "愷妡在光的路上.mp3",
