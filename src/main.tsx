@@ -198,6 +198,25 @@ function App() {
     }
   }
 
+  function seekTo(nextTime: number) {
+    const audio = audioRef.current;
+    if (!audio || !Number.isFinite(nextTime) || !duration) return;
+    const clampedTime = Math.max(0, Math.min(duration, nextTime));
+    audio.currentTime = clampedTime;
+    setCurrentTime(clampedTime);
+  }
+
+  function getSeekTimeFromPointer(event: React.PointerEvent<HTMLDivElement>) {
+    if (!duration) return;
+    const rect = event.currentTarget.getBoundingClientRect();
+    const ratio = Math.max(0, Math.min(1, (event.clientX - rect.left) / rect.width));
+    return ratio * duration;
+  }
+
+  function adjustSeek(seconds: number) {
+    seekTo(currentTime + seconds);
+  }
+
   function selectTrack(id: string) {
     pendingAutoplayRef.current = true;
     if (id === selectedTrackId) {
@@ -455,20 +474,36 @@ function App() {
 
           <div className="timeline">
             <span>{formatTime(currentTime)}</span>
-            <input
+            <div
+              className={`timeline-track ${duration ? '' : 'is-disabled'}`}
+              role="slider"
               aria-label="播放進度"
-              type="range"
-              min="0"
-              max={duration || 0}
-              step="0.1"
-              value={currentTime}
-              onChange={(event) => {
-                const audio = audioRef.current;
-                if (!audio) return;
-                audio.currentTime = Number(event.target.value);
+              aria-valuemin={0}
+              aria-valuemax={Math.round(duration || 0)}
+              aria-valuenow={Math.round(currentTime)}
+              tabIndex={duration ? 0 : -1}
+              onPointerDown={(event) => {
+                const nextTime = getSeekTimeFromPointer(event);
+                if (nextTime === undefined) return;
+                event.currentTarget.setPointerCapture(event.pointerId);
+                seekTo(nextTime);
+              }}
+              onPointerMove={(event) => {
+                if (!event.currentTarget.hasPointerCapture(event.pointerId)) return;
+                const nextTime = getSeekTimeFromPointer(event);
+                if (nextTime !== undefined) seekTo(nextTime);
+              }}
+              onPointerUp={(event) => event.currentTarget.releasePointerCapture(event.pointerId)}
+              onKeyDown={(event) => {
+                if (event.key === 'ArrowLeft') adjustSeek(-5);
+                if (event.key === 'ArrowRight') adjustSeek(5);
+                if (event.key === 'Home') seekTo(0);
+                if (event.key === 'End') seekTo(duration);
               }}
               style={{ '--progress': `${progress}%` } as React.CSSProperties}
-            />
+            >
+              <span className="timeline-fill" />
+            </div>
             <span>{formatTime(duration)}</span>
           </div>
 

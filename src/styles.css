@@ -567,9 +567,33 @@ body.lights-off .app-shell .mode-button.is-active {
   text-align: center;
 }
 
-.timeline input {
+.timeline-track {
+  position: relative;
   width: 100%;
-  accent-color: #ff6da8;
+  height: 16px;
+  border-radius: 999px;
+  background: rgba(23, 20, 42, 0.2);
+  cursor: pointer;
+  overflow: hidden;
+  touch-action: none;
+}
+
+.timeline-track:focus-visible {
+  outline: 3px solid rgba(255, 109, 168, 0.32);
+  outline-offset: 3px;
+}
+
+.timeline-track.is-disabled {
+  cursor: default;
+  opacity: 0.45;
+}
+
+.timeline-fill {
+  display: block;
+  width: var(--progress);
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(135deg, #ff6da8, #52d1c8);
 }
 
 .download-row {
