@@ -28,7 +28,7 @@ async function listFiles(dir, extSet) {
   return entries
     .filter((entry) => entry.isFile() && extSet.has(path.extname(entry.name).toLowerCase()))
     .map((entry) => entry.name)
-    .sort((a, b) => a.localeCompare(b, 'zh-Hant'));
+    .sort((a, b) => a.localeCompare(b, 'zh-Hant', { numeric: true }));
 }
 
 function stem(fileName) {

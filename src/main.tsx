@@ -104,12 +104,12 @@ function randomAnyTrackId() {
 function App() {
   const [selectedTrackId, setSelectedTrackId] = useState(tracks[0]?.id ?? '');
   const [trackQuery, setTrackQuery] = useState('');
-  const [playbackMode, setPlaybackMode] = useState<PlaybackMode>('repeat-all');
+  const [playbackMode, setPlaybackMode] = useState<PlaybackMode>('shuffle');
   const [captions, setCaptions] = useState<Caption[]>([]);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [photoIndex, setPhotoIndex] = useState(0);
+  const [photoIndex, setPhotoIndex] = useState(() => randomPhotoIndex(-1));
   const audioRef = useRef<HTMLAudioElement>(null);
   const pendingAutoplayRef = useRef(false);
   const hasStartedPlaybackRef = useRef(false);
